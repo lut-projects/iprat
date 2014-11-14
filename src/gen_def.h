@@ -9,7 +9,8 @@
 #include "model_calc_functions.h"
 
 #define LIMIT 6+1
-#define VALUES 15 
+#define VALUES 17
+#define ASSESSABLE 9
 
 
 #endif

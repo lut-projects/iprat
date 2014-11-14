@@ -22,6 +22,11 @@
 #define ATTACK_GAIN 13
 #define ASSET_VALUE 14
 
+// Step 3
+#define IMPACT 15
+#define LIKELIHOOD 16
+#define PRIVACY_RISK 17
+
 
 #define TYPE_INITIAL 0
 #define TYPE_UPDATE 1
@@ -43,6 +48,8 @@ uint8_t calc_user_damage(uint8_t state[], int pos);
 
 uint8_t calc_nothing(uint8_t state[], int pos);
 
+uint8_t calc_impact(uint8_t state[], int pos);
+uint8_t calc_likelihood(uint8_t state[], int pos);
 uint8_t calc_privacy_risk(uint8_t state[]);
 
 #endif

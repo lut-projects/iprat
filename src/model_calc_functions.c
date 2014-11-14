@@ -143,17 +143,30 @@ uint8_t calc_nothing(uint8_t state[], int pos) {
 	return state[pos];
 }
 
-uint8_t calc_privacy_risk(uint8_t state[]) {
+uint8_t calc_impact(uint8_t state[], int pos) {
 	uint8_t asset_value = state[ASSET_VALUE];
 	uint8_t damage = state[DAMAGE_LEVEL];
+	
+	uint8_t value = divide(asset_value+damage,2);
+	return value;
+}
+
+uint8_t calc_likelihood(uint8_t state[], int pos) {
 	uint8_t attack_act = state[ATTACK_ACTUALIZATION];
 	uint8_t ams = state[ASSET_MISUSE_POTENTIAL];
 	uint8_t attack_gain = state[ATTACK_GAIN];
 	
-	uint8_t impact = divide(asset_value+damage,2);
-	uint8_t likelihood = divide(ams+attack_act+attack_gain,3);
-	printf("Impact: %hd\nLikelihood: %hd\n",impact,likelihood);
+	uint8_t value = divide(ams+attack_act+attack_gain,3);
+	return value;
+}
+
+
+
+uint8_t calc_privacy_risk(uint8_t state[]) {
 	
-	return divide(impact+likelihood,2);
+	printf("Impact: %hd\nLikelihood: %hd\n",state[IMPACT],state[LIKELIHOOD]);
+	
+	state[PRIVACY_RISK] = divide(state[IMPACT]+state[LIKELIHOOD],2);
+	return state[PRIVACY_RISK];
 	
 }

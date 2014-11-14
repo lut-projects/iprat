@@ -13,8 +13,13 @@ state_container* new_state_container() {
 	return container;
 }
 
-state_container* new_state_container_from_initial(char* initial_state) {
+state_container* new_state_container_from_initial(char* initial_assessment) {
 	state_container *container = new_state_container();
+	
+	char* initial_state = (char*)malloc(sizeof(char)*VALUES+1);
+	memcpy(initial_state,initial_assessment,ASSESSABLE);
+	for(int i = ASSESSABLE; i < VALUES+1; i++) initial_state[i] = '1';
+	
 	switch(set_state(container,initial_state)) {
 		case 0:
 			break; // Success
@@ -28,6 +33,7 @@ state_container* new_state_container_from_initial(char* initial_state) {
 			printf("The state is incomplete\n");// TODO: react to error if state invalid
 			break;
 	}
+	free(initial_state);
 	return container;
 }
 
@@ -52,6 +58,8 @@ void initialize_functions() {
 	calculation[DATA_QUANTITY] = calc_nothing;
 	calculation[DATA_SIGNIFICANCE] = calc_nothing;
 	calculation[DATA_ACCESS] = calc_nothing;
+	calculation[IMPACT] = calc_impact;
+	calculation[LIKELIHOOD] = calc_likelihood;
 }
 
 void initialize_state(state_container* container) {
@@ -114,8 +122,8 @@ int check_state_history_repetition(state_container* container) {
 }
 
 void print_state(state_container* container) {
-	printf("              A P D A A D D D D D U D A A A\n");
-	printf("              A D C N R A Q S T V D L M G V\n");
+	printf("              A P D A A D D D D D U D A A A I A\n");
+	printf("              A D C A R A Q S T V D L M G V M L\n");
 	printf("R%.5d (U=%.2d) ",container->round_number, container->changes_on_this_round);
 	
 	for(int i = 0; i < VALUES ; i++) printf("%u ",container->state[i]);
@@ -135,12 +143,12 @@ void print_state_history(state_container* container) {
  * Returns 0 or amount of errorous state variables in given state
 */
 int set_state(state_container* container, char* state) {
-	if(strlen(state) != VALUES) return -1;
+	if(strlen(state) != VALUES+1) return -1;
 	if(!container) return -2;
 	
 	int failures = 0;
 	
-	for(int i = 0; i < VALUES ; i++) {
+	for(int i = 0; i < VALUES+1 ; i++) {
 		uint8_t value = 0;
 		char temp_value = 0;
 		memcpy(&temp_value,&state[i],sizeof(char));

@@ -1,4 +1,5 @@
 
+#include <error.h>
 #include "validator.h"
 #include "state_container.h"
 #include "tests.h"
@@ -7,7 +8,31 @@
 #define TEST_AM 11
 #define TEST_UD 12
 
+#define ERROR_INV_STATE 100
+#define ERROR_MISSING_PAR 101
+#define ERROR_HELP_REQ 102
+#define ERROR_UNKNOWN_PAR 103
+
 #define ROUNDLIMIT 50
+
+void print_usage(int error, int temp,char* arg, char* state) {
+	switch(error){
+		case ERROR_INV_STATE:
+			printf("State %s is invalid length (%d), required length = %d\n",state,(int)strlen(state),ASSESSABLE);
+			break;
+		case ERROR_MISSING_PAR:
+			printf("Parameter -%c is missing a operand\n", temp);
+			break;
+		case ERROR_HELP_REQ:
+			break;
+		case ERROR_UNKNOWN_PAR:
+			printf("Unknown parameter (%c)\n",temp);
+			break;
+		default:
+			printf("unknown error\n");
+	}
+	printf("Usage: %s -[chC] || -f PATH || -v STATE\n",arg);
+}
 
 int func_test(int type) {
 	int value = 1, update = 1, changes = 1, rounds = 0;
@@ -64,6 +89,7 @@ int main(int argc, char* argv[]) {
 	char *input_state = NULL;
 	char *input_file = NULL;
 	int type = -1, optc = 0;
+	int error = -1;
 	
 	extern char *optarg;
 	extern int optopt;
@@ -77,6 +103,7 @@ int main(int argc, char* argv[]) {
 				break;
 			// Validate inputted state
 			case 'v':
+				if(strlen(optarg) != ASSESSABLE) error = ERROR_INV_STATE;
 				input_state = optarg;
 				type = VALIDATE_SINGLE;
 				break;
@@ -88,21 +115,24 @@ int main(int argc, char* argv[]) {
 				break;
 			case 't':
 				type = FUNC_TEST_LOOP;
+				if(strlen(optarg) != ASSESSABLE) error = ERROR_INV_STATE;
 				input_state = optarg;
 				break;
 			case 'h':
-				printf("Usage: %s -[chC] || -f PATH || -v STATE\n",argv[0]);
-				return 0;
+				error = ERROR_HELP_REQ;
 				break;
 			case ':':
-				printf("Parameter -%c is missing a operand\n", optopt);
-				return 0;
-				return -1;
+				error = ERROR_MISSING_PAR;
+				break;
 			case '?':
-				printf("Unknown parameter\n");
-				return 0;
+				error = ERROR_UNKNOWN_PAR;
 				break;
 		}
+	}
+	
+	if(error != -1) { 
+		print_usage(error,optopt,argv[0],input_state);
+		return 1;
 	}
 	state_container* state = NULL;
 	int updates = 0;
