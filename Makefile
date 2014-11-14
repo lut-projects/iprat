@@ -1,7 +1,7 @@
 COMPILER=gcc
 FLAGS=-Wall -std=gnu99 -g
 LIBS=
-SOURCES=validator.c model_calc_functions.c math_functions.c state_creation.c state_container.c tests.c
+SOURCES=src/alidator.c src/model_calc_functions.c src/math_functions.c src/state_creation.c src/state_container.c src/tests.c
 EXEC=validator
 
 all:
