@@ -44,7 +44,7 @@ void initialize_functions() {
 	calculation[ATTACK_GAIN] = calc_attack_gain;
 	calculation[ATTACK_ACTUALIZATION] = calc_attack_actualization;
 	calculation[ASSET_ROLE] = calc_nothing;
-	calculation[ASSET_NETWORK] = calc_nothing;
+	calculation[ASSET_ACCESS] = calc_nothing;
 	calculation[PRIVACY_DAMAGE] = calc_privacy_damage;
 	calculation[USER_DAMAGE] = calc_user_damage;
 	calculation[DATA_CAPABILITIES] = calc_data_capabilities;
