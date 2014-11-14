@@ -7,10 +7,12 @@ uint8_t init_data_value(uint8_t state[]) { return calc_data_value(state,DATA_VAL
 
 uint8_t init_asset_value(uint8_t state[]) { return calc_asset_value(state,ASSET_VALUE); }
 
-uint8_t init_damage_level(uint8_t state[]) { return (state[PRIVACY_DAMAGE] + state[USER_DAMAGE]) / 2; }
+uint8_t init_user_damage(uint8_t state[]) { return divide(state[DATA_CAPABILITIES] + state[DATA_VALUE],2); }
+
+uint8_t init_damage_level(uint8_t state[]) { return divide(state[PRIVACY_DAMAGE] + state[USER_DAMAGE],2); }
 
 uint8_t calc_data_value(uint8_t state[], int pos) {
-	return divide((state[DATA_SIGNIFICANCE] + state[DATA_ACCESS]),2);
+	return divide((state[DATA_SIGNIFICANCE] + state[DATA_ACCESS] + state[DATA_CAPABILITIES]),3);
 }
 
 uint8_t calc_asset_value(uint8_t state[], int pos) {
@@ -92,12 +94,12 @@ uint8_t calc_data_capabilities(uint8_t state[], int pos) {
 	uint8_t value = state[pos];
 	uint8_t pdamage = state[PRIVACY_DAMAGE];
 
-	uint8_t matrix[6][6] = {{1,2,3,3,3,3},
-				{1,2,3,3,3,3},
-				{1,2,3,4,4,4},
-				{3,4,4,4,5,6},
-				{4,5,5,5,5,6},
-				{4,5,5,5,6,6}};
+	uint8_t matrix[6][6] = {{1,2,3,3,3,4},
+				{1,2,3,3,3,4},
+				{1,2,3,3,4,5},
+				{1,3,4,4,5,6},
+				{2,3,5,5,5,6},
+				{3,4,5,5,6,6}};
 				
 	value = matrix[pdamage-1][value-1];
 	
@@ -122,18 +124,17 @@ uint8_t calc_privacy_damage(uint8_t state[], int pos) {
 }
 
 uint8_t calc_user_damage(uint8_t state[], int pos) {
-	uint8_t value = state[pos];
-	uint8_t datav = state[DATA_VALUE];
-	uint8_t datac = state[DATA_CAPABILITIES];
+	uint8_t value = divide(state[DATA_CAPABILITIES] + state[DATA_VALUE],2);
+	uint8_t role = state[ASSET_ROLE];
 	
-	uint8_t matrix[6][6] = {{1,2,2,2,2,3},
-				{1,1,2,2,3,3},
-				{1,2,2,3,4,4},
-				{1,2,3,4,5,5},
-				{2,3,4,5,5,6},
-				{3,4,5,5,6,6}};
+	uint8_t matrix[6][6] = {{1,2,3,4,5,6},
+				{1,2,3,4,5,6},
+				{1,2,3,4,5,6},
+				{2,3,4,4,5,6},
+				{3,4,5,5,5,6},
+				{4,5,6,6,6,6}};
 				
-	value = matrix[datav-1][datac-1];
+	value = matrix[role-1][value-1];
 	
 	return value;
 }

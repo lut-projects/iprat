@@ -28,6 +28,7 @@
 
 uint8_t init_data_value(uint8_t state[]);
 uint8_t init_asset_value(uint8_t state[]);
+uint8_t init_user_damage(uint8_t state[]);
 uint8_t init_damage_level(uint8_t state[]);
 
 uint8_t calc_data_value(uint8_t state[], int pos);
