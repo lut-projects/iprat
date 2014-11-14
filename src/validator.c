@@ -19,6 +19,16 @@ void print_usage(int error, int temp,char* arg, char* state) {
 	switch(error){
 		case ERROR_INV_STATE:
 			printf("State %s is invalid length (%d), required length = %d\n",state,(int)strlen(state),ASSESSABLE);
+			printf("STATE:\n\
+		1: Attack actualization\t(ATT)\n\
+		2: Privacy damage\t(PRD)\n\
+		3: Data capabilities\t(DAC)\n\
+		4: Asset access\t\t(ASA)\n\
+		5: Asset role\t\t(ASR)\n\
+		6: Data access\t\t(DAA)\n\
+		7: Data quantity\t(DAQ)\n\
+		8: Data significance\t(DAS)\n\
+		9: Data storage time\t(DST)\n");
 			break;
 		case ERROR_MISSING_PAR:
 			printf("Parameter -%c is missing a operand\n", temp);
@@ -32,6 +42,7 @@ void print_usage(int error, int temp,char* arg, char* state) {
 			printf("unknown error\n");
 	}
 	printf("Usage: %s -[chC] || -f PATH || -v STATE\n",arg);
+	
 }
 
 int func_test(int type) {

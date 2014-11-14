@@ -122,8 +122,10 @@ int check_state_history_repetition(state_container* container) {
 }
 
 void print_state(state_container* container) {
+	printf("\n");
 	printf("              A P D A A D D D D D U D A A A I A\n");
-	printf("              A D C A R A Q S T V D L M G V M L\n");
+	printf("              T R A S S A A A S A S M S T S T T\n");
+	printf("              T D C A R A Q S T V D G M G V P L\n");
 	printf("R%.5d (U=%.2d) ",container->round_number, container->changes_on_this_round);
 	
 	for(int i = 0; i < VALUES ; i++) printf("%u ",container->state[i]);
