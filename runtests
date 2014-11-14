@@ -1,0 +1,9 @@
+make
+clear
+echo "ATTACK GAIN" && ./validator -t 10
+echo ""
+echo "ASSET MISUSE POTENTIAL"
+./validator -t 11
+echo "" 
+echo "USER DAMAGE"
+./validator -t 12
