@@ -6,7 +6,7 @@
 #define HISTORY 5
 
 typedef struct t_state_container {
-	uint8_t state[VALUES];
+	uint8_t state[VALUES_TOTAL];
 	int8_t last_change_position;
 	uint32_t round_number;
 	uint8_t changes_on_this_round;

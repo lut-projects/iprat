@@ -194,7 +194,7 @@ int main(int argc, char* argv[]) {
 			}
 			print_state_history(state);
 			print_state(state);
-			printf("Risk = %hd\n",calc_privacy_risk(state->state));
+			printf("Impact: %hd\nLikelihood: %hd\nRisk = %hd\n",state[IMPACT],state[LIKELIHOOD],calc_privacy_risk(state->state));
 			
 			break;
 		case CREATE_STATES:

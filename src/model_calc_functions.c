@@ -163,9 +163,6 @@ uint8_t calc_likelihood(uint8_t state[], int pos) {
 
 
 uint8_t calc_privacy_risk(uint8_t state[]) {
-	
-	printf("Impact: %hd\nLikelihood: %hd\n",state[IMPACT],state[LIKELIHOOD]);
-	
 	state[PRIVACY_RISK] = divide(state[IMPACT]+state[LIKELIHOOD],2);
 	return state[PRIVACY_RISK];
 	

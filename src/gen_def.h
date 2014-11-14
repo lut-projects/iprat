@@ -10,6 +10,7 @@
 
 #define LIMIT 6+1
 #define VALUES 17
+#define VALUES_TOTAL VALUES+1
 #define ASSESSABLE 9
 
 

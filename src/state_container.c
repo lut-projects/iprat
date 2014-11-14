@@ -2,7 +2,7 @@
 
 state_container* new_state_container() {
 	state_container *container = calloc(sizeof(state_container),sizeof(state_container));
-	for(int i = 0; i < VALUES; i++) {
+	for(int i = 0; i < VALUES_TOTAL; i++) {
 		container->state[i] = 1;
 		for(int j = 0; j < HISTORY; j++) container->history[j][i] = 0; //History is set to uninitialized
 	}
@@ -16,9 +16,9 @@ state_container* new_state_container() {
 state_container* new_state_container_from_initial(char* initial_assessment) {
 	state_container *container = new_state_container();
 	
-	char* initial_state = (char*)malloc(sizeof(char)*VALUES+1);
+	char* initial_state = (char*)calloc(VALUES_TOTAL,sizeof(char*));
 	memcpy(initial_state,initial_assessment,ASSESSABLE);
-	for(int i = ASSESSABLE; i < VALUES+1; i++) initial_state[i] = '1';
+	for(int i = ASSESSABLE; i < VALUES_TOTAL; i++) initial_state[i] = '1';
 	
 	switch(set_state(container,initial_state)) {
 		case 0:
@@ -135,7 +135,7 @@ void print_state(state_container* container) {
 
 void print_state_history(state_container* container) {
 	for(int i = HISTORY-1; i >= 0; i--) {
-		printf("      %.2d c%.2d: ",i+1,container->last_change_position_history[i]);
+		printf("      %.2d c%.2d: ",i+1,container->last_change_position_history[i] == -1 ? 0 : container->last_change_position_history[i]);
 		for(int j = 0; j < VALUES; j++) printf("%u ",container->history[i][j]);
 		printf("\n");
 	}
@@ -145,12 +145,12 @@ void print_state_history(state_container* container) {
  * Returns 0 or amount of errorous state variables in given state
 */
 int set_state(state_container* container, char* state) {
-	if(strlen(state) != VALUES+1) return -1;
+	if(strlen(state) != VALUES_TOTAL) return -1;
 	if(!container) return -2;
 	
 	int failures = 0;
 	
-	for(int i = 0; i < VALUES+1 ; i++) {
+	for(int i = 0; i < VALUES_TOTAL ; i++) {
 		uint8_t value = 0;
 		char temp_value = 0;
 		memcpy(&temp_value,&state[i],sizeof(char));
@@ -169,7 +169,7 @@ int set_existing_state(state_container* container, uint8_t *state) {
 	
 	int failures = 0;
 	
-	for(int i = 0; i < VALUES ; i++) {
+	for(int i = 0; i < VALUES_TOTAL ; i++) {
 		if ((state[i] > 0) && (state[i] < LIMIT)) container->state[i] = state[i];
 		else {
 			printf("Invalid state variable \"%u\" @ state[%d]\n",state[i],i);
