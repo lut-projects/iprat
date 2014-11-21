@@ -27,12 +27,12 @@ uint8_t calc_damage_level(uint8_t state[], int pos) {
 	uint8_t value = divide((state[PRIVACY_DAMAGE] + state[USER_DAMAGE]),2);
 	uint8_t attack = state[ATTACK_ACTUALIZATION];
 	
-	uint8_t matrix[6][6] = {{1,2,3,4,5,5},
+	uint8_t matrix[6][6] = {{1,1,2,2,3,3},
+				{1,2,3,3,4,4},
+				{1,2,3,4,4,5},
 				{1,2,3,4,5,5},
-				{1,2,3,4,5,5},
-				{3,3,4,4,5,6},
-				{4,4,5,5,5,6},
-				{4,5,6,6,6,6}};
+				{1,2,3,4,5,6},
+				{2,3,4,5,6,6}};
 				
 	value = matrix[attack-1][value-1];
 
@@ -60,12 +60,12 @@ uint8_t calc_attack_actualization(uint8_t state[], int pos) {
 	uint8_t value = state[pos];
 	uint8_t aaccess = state[ASSET_ACCESS];
 
-	uint8_t matrix[6][6] = {{1,2,3,3,3,3},
-				{1,2,3,3,3,3},
+	uint8_t matrix[6][6] = {{1,1,1,2,2,3},
+				{1,2,3,3,3,4},
 				{2,2,3,4,5,5},
 				{2,3,3,4,5,5},
-				{4,4,4,4,5,6},
-				{4,4,4,5,5,6}};
+				{4,4,4,5,5,6},
+				{5,5,5,5,6,6}};
 				
 	value = matrix[aaccess-1][value-1];
 	
@@ -79,11 +79,11 @@ uint8_t calc_attack_gain(uint8_t state[], int pos) {
 	uint8_t dataq = state[DATA_QUANTITY];
 	
 	uint8_t matrix[6][6] = {{1,1,1,1,1,2},
-				{1,1,2,2,2,3},
-				{1,2,2,3,4,5},
-				{1,3,4,4,5,5},
-				{1,4,4,5,5,6},
-				{1,5,5,6,6,6}};
+				{1,2,2,2,3,4},
+				{1,2,3,3,4,5},
+				{1,3,4,4,5,6},
+				{1,4,5,5,5,6},
+				{1,5,6,6,6,6}};
 				
 	value = matrix[datav-1][dataq-1];
 	
@@ -94,12 +94,12 @@ uint8_t calc_data_capabilities(uint8_t state[], int pos) {
 	uint8_t value = state[pos];
 	uint8_t pdamage = state[PRIVACY_DAMAGE];
 
-	uint8_t matrix[6][6] = {{1,2,3,3,3,4},
+	uint8_t matrix[6][6] = {{1,2,3,3,3,3},
 				{1,2,3,3,3,4},
-				{1,2,3,3,4,5},
+				{1,2,3,4,5,6},
 				{1,3,4,4,5,6},
-				{2,3,5,5,5,6},
-				{3,4,5,5,6,6}};
+				{1,3,5,5,5,6},
+				{1,4,5,5,6,6}};
 				
 	value = matrix[pdamage-1][value-1];
 	
@@ -111,12 +111,12 @@ uint8_t calc_privacy_damage(uint8_t state[], int pos) {
 	uint8_t value = state[pos];
 	uint8_t signific = state[DATA_SIGNIFICANCE];
 	
-	uint8_t matrix[6][6] = {{1,2,3,3,3,3},
-				{1,2,3,3,3,3},
-				{1,2,3,4,4,4},
-				{3,4,4,4,5,6},
-				{4,5,5,5,5,6},
-				{4,5,5,5,6,6}};
+	uint8_t matrix[6][6] = {{1,1,2,3,4,5},
+				{1,2,3,4,5,5},
+				{1,2,3,4,5,5},
+				{1,2,3,4,5,6},
+				{1,2,4,5,5,6},
+				{1,2,4,5,6,6}};
 				
 	value = matrix[signific-1][value-1];
 	
