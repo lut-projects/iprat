@@ -156,8 +156,8 @@ int main(int argc, char* argv[]) {
 			state = new_state_container_from_file(input_file);
 			while((updates = update_state(state)) > 0) {
 				//print_state(state,++round,updates);
-				if(state->round_number == 90000) {
-					printf("!!!A STUCK STATE WAS DETECTED, 90k ROUNDS!");
+				if(state->round_number == 1000) {
+					printf("!!!A STUCK STATE WAS DETECTED, 1k ROUNDS!");
 					break;
 				}
 			}
@@ -173,8 +173,8 @@ int main(int argc, char* argv[]) {
 
 			while((updates = update_state(state)) > 0) {
 				//print_state(state,++round,updates);
-				if(state->round_number == 90000) {
-					printf("!!!A STUCK STATE WAS DETECTED, 90k ROUNDS! (input: %s\n",input_state);
+				if(state->round_number == 1000) {
+					printf("!!!A STUCK STATE WAS DETECTED, 1k ROUNDS! (input: %s\n",input_state);
 					print_state(state);
 					print_state_history(state);
 					break;
@@ -201,6 +201,7 @@ int main(int argc, char* argv[]) {
 			create_all_states();
 			break;
 		case CREATE_AND_VALIDATE:
+			create_and_validate_all_states();
 			break;
 		case FUNC_TEST_LOOP:
 			func_test(atoi(input_state));
