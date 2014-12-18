@@ -13,19 +13,20 @@
 #define DATA_QUANTITY 6
 #define DATA_SIGNIFICANCE 7
 #define DATA_STORAGE_TIME 8
+#define DATA_IDENTIFIABILITY 9
 
 // Step 2
-#define DATA_VALUE 9
-#define USER_DAMAGE 10
-#define DAMAGE_LEVEL 11
-#define ASSET_MISUSE_POTENTIAL 12
-#define ATTACK_GAIN 13
-#define ASSET_VALUE 14
+#define DATA_VALUE 10
+#define USER_DAMAGE 11
+#define DAMAGE_LEVEL 12
+#define ASSET_MISUSE_POTENTIAL 13
+#define ATTACK_GAIN 14
+#define ASSET_VALUE 15
 
 // Step 3
-#define IMPACT 15
-#define LIKELIHOOD 16
-#define PRIVACY_RISK 17
+#define IMPACT 16
+#define LIKELIHOOD 17
+#define PRIVACY_RISK 18
 
 
 #define TYPE_INITIAL 0
@@ -35,6 +36,7 @@ uint8_t init_data_value(uint8_t state[]);
 uint8_t init_asset_value(uint8_t state[]);
 uint8_t init_user_damage(uint8_t state[]);
 uint8_t init_damage_level(uint8_t state[]);
+uint8_t init_data_capabilitites(uint8_t state[]);
 
 uint8_t calc_data_value(uint8_t state[], int pos);
 uint8_t calc_asset_value(uint8_t state[], int pos);
