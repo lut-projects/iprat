@@ -124,10 +124,16 @@ int check_state_history_repetition(state_container* container) {
 }
 
 void print_state(state_container* container) {
+	
+#ifdef __NO_ABBR
+	printf("\n---------------------------------------------\n");
+#else
 	printf("\n");
 	printf("              A P D A A D D D D D D U D A A A I A\n");
 	printf("              T R A S S A A A S I A S M S T S T T\n");
 	printf("              T D C A R A Q S T F V D G M G V P L\n");
+#endif
+	
 	printf("R%.5d (U=%.2d) ",container->round_number, container->changes_on_this_round);
 	
 	for(int i = 0; i < VALUES ; i++) printf("%u ",container->state[i]);
