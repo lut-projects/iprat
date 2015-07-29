@@ -18,7 +18,7 @@ uint8_t init_data_capabilitites(uint8_t state[]) {
 	uint8_t matrix[3][6] = {{1,1,2,3,4,4},
 				{1,3,4,4,5,6},
 				{3,4,5,6,6,6}};
-	printf("identifiability [%d][%d] = %d\n",identif,value,matrix[identif-1][value-1]);
+	//printf("identifiability [%d][%d] = %d\n",identif,value,matrix[identif-1][value-1]);
 	value = matrix[identif-1][value-1];
 
 	return value;

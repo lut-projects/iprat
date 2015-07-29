@@ -142,10 +142,17 @@ void print_state(state_container* container) {
 }
 
 void print_state_history(state_container* container) {
-	for(int i = HISTORY-1; i >= 0; i--) {
-		printf("      %.2d c%.2d: ",i+1,container->last_change_position_history[i] == -1 ? 0 : container->last_change_position_history[i]);
-		for(int j = 0; j < VALUES; j++) printf("%u ",container->history[i][j]);
-		printf("\n");
+	for(int i = HISTORY-1, h = 0; i >= 0; i--) {
+		if(container->history[i][0] > 0) {
+#ifdef __NO_ABBR
+			h++;
+			printf("  %.2d ",h);
+#else
+			printf("      %.2d c%.2d: ",i+1,container->last_change_position_history[i] == -1 ? 0 : container->last_change_position_history[i]);
+#endif
+			for(int j = 0; j < VALUES; j++) printf("%u ",container->history[i][j]);
+			printf("\n");
+		}
 	}
 }
 

@@ -194,8 +194,10 @@ int main(int argc, char* argv[]) {
 				}
 			}
 			print_state_history(state);
+#ifndef __NO_ABBR
 			print_state(state);
-			printf("Impact: %hd\nLikelihood: %hd\nRisk = %hd\n",state->state[IMPACT],state->state[LIKELIHOOD], calc_privacy_risk(state->state) );
+#endif
+			printf("Impact:%hd\nLikelihood:%hd\nRisk:%hd\n",state->state[IMPACT],state->state[LIKELIHOOD], calc_privacy_risk(state->state) );
 			
 			break;
 		case CREATE_STATES:
