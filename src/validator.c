@@ -20,15 +20,16 @@ void print_usage(int error, int temp,char* arg, char* state) {
 		case ERROR_INV_STATE:
 			printf("State %s is invalid length (%d), required length = %d\n",state,(int)strlen(state),ASSESSABLE);
 			printf("STATE:\n\
-		1: Attack actualization\t(ATT)\n\
-		2: Privacy damage\t(PRD)\n\
-		3: Data capabilities\t(DAC)\n\
-		4: Asset access\t\t(ASA)\n\
-		5: Asset role\t\t(ASR)\n\
-		6: Data access\t\t(DAA)\n\
-		7: Data quantity\t(DAQ)\n\
-		8: Data significance\t(DAS)\n\
-		9: Data storage time\t(DST)\n");
+		01: Attack actualization\t(ATT)\n\
+		02: Privacy damage\t(PRD)\n\
+		03: Data capabilities\t(DAC)\n\
+		04: Asset access\t\t(ASA)\n\
+		05: Asset role\t\t(ASR)\n\
+		06: Data access\t\t(DAA)\n\
+		07: Data quantity\t(DAQ)\n\
+		08: Data significance\t(DAS)\n\
+		09: Data storage time\t(DST)\n\
+		10: Data identifiability\t(DIF)\n");
 			break;
 		case ERROR_MISSING_PAR:
 			printf("Parameter -%c is missing a operand\n", temp);
@@ -193,8 +194,10 @@ int main(int argc, char* argv[]) {
 				}
 			}
 			print_state_history(state);
+#ifndef __NO_ABBR
 			print_state(state);
-			printf("Impact: %hd\nLikelihood: %hd\nRisk = %hd\n",state->state[IMPACT],state->state[LIKELIHOOD], calc_privacy_risk(state->state) );
+#endif
+			printf("Impact:%hd\nLikelihood:%hd\nRisk:%hd\n",state->state[IMPACT],state->state[LIKELIHOOD], calc_privacy_risk(state->state) );
 			
 			break;
 		case CREATE_STATES:

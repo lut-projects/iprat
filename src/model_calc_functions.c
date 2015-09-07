@@ -11,6 +11,19 @@ uint8_t init_user_damage(uint8_t state[]) { return divide(state[DATA_CAPABILITIE
 
 uint8_t init_damage_level(uint8_t state[]) { return divide(state[PRIVACY_DAMAGE] + state[USER_DAMAGE],2); }
 
+uint8_t init_data_capabilitites(uint8_t state[]) {
+	uint8_t identif = state[DATA_IDENTIFIABILITY];
+	uint8_t value = state[DATA_CAPABILITIES];
+	
+	uint8_t matrix[3][6] = {{1,1,2,3,4,4},
+				{1,3,4,4,5,6},
+				{3,4,5,6,6,6}};
+	//printf("identifiability [%d][%d] = %d\n",identif,value,matrix[identif-1][value-1]);
+	value = matrix[identif-1][value-1];
+
+	return value;
+}
+
 uint8_t calc_data_value(uint8_t state[], int pos) {
 	return divide((state[DATA_SIGNIFICANCE] + state[DATA_ACCESS] + state[DATA_CAPABILITIES]),3);
 }

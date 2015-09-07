@@ -30,5 +30,6 @@ run
 			7: Data quantity (DAQ)
 			8: Data significance (DAS)
 			9: Data storage time (DST)
+			10: Data identifiability (DIF) - value 1-3
 
 	An example state: 112233445

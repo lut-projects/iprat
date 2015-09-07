@@ -24,13 +24,13 @@ state_container* new_state_container_from_initial(char* initial_assessment) {
 		case 0:
 			break; // Success
 		case -1:
-			printf("invalid input parameters for set_state() state = %s is wrong length\n",initial_state);
+			printf("new_state_container_from_initial: invalid input parameters for set_state() state = %s is wrong length\n",initial_state);
 			break; //
 		case -2:
-			printf("set_state() no container\n");
+			printf("new_state_container_from_initial: set_state() no container\n");
 			break;
 		default:
-			printf("The state is incomplete\n");// TODO: react to error if state invalid
+			printf("new_state_container_from_initial: The state is incomplete\n");// TODO: react to error if state invalid
 			break;
 	}
 	free(initial_state);
@@ -60,12 +60,14 @@ void initialize_functions() {
 	calculation[DATA_ACCESS] = calc_nothing;
 	calculation[IMPACT] = calc_impact;
 	calculation[LIKELIHOOD] = calc_likelihood;
+	calculation[DATA_IDENTIFIABILITY] = calc_nothing;
 }
 
 void initialize_state(state_container* container) {
 	//container->state[DATA_VALUE] = init_data_value(container->state);
 	//container->state[ASSET_VALUE] = init_asset_value(container->state);
 	//container->state[DAMAGE_LEVEL] = init_damage_level(container->state);
+	container->state[DATA_CAPABILITIES] = init_data_capabilitites(container->state);
 }
 
 uint8_t update_state(state_container* container) {
@@ -89,7 +91,7 @@ uint8_t update_state(state_container* container) {
 			}
 		}
 		else {
-			printf("ERROR, state[%d] update value is off limits: %d\n", i, update);
+			printf("update_state: ERROR, state[%d] update value is off limits: %d\n", i, update);
 			print_state(container);
 		}
 	}
@@ -122,10 +124,16 @@ int check_state_history_repetition(state_container* container) {
 }
 
 void print_state(state_container* container) {
+	
+#ifdef __NO_ABBR
+	printf("\n---------------------------------------------\n");
+#else
 	printf("\n");
-	printf("              A P D A A D D D D D U D A A A I A\n");
-	printf("              T R A S S A A A S A S M S T S T T\n");
-	printf("              T D C A R A Q S T V D G M G V P L\n");
+	printf("              A P D A A D D D D D D U D A A A I A\n");
+	printf("              T R A S S A A A S I A S M S T S T T\n");
+	printf("              T D C A R A Q S T F V D G M G V P L\n");
+#endif
+	
 	printf("R%.5d (U=%.2d) ",container->round_number, container->changes_on_this_round);
 	
 	for(int i = 0; i < VALUES ; i++) printf("%u ",container->state[i]);
@@ -134,10 +142,17 @@ void print_state(state_container* container) {
 }
 
 void print_state_history(state_container* container) {
-	for(int i = HISTORY-1; i >= 0; i--) {
-		printf("      %.2d c%.2d: ",i+1,container->last_change_position_history[i] == -1 ? 0 : container->last_change_position_history[i]);
-		for(int j = 0; j < VALUES; j++) printf("%u ",container->history[i][j]);
-		printf("\n");
+	for(int i = HISTORY-1, h = 0; i >= 0; i--) {
+		if(container->history[i][0] > 0) {
+#ifdef __NO_ABBR
+			h++;
+			printf("  %.2d ",h);
+#else
+			printf("      %.2d c%.2d: ",i+1,container->last_change_position_history[i] == -1 ? 0 : container->last_change_position_history[i]);
+#endif
+			for(int j = 0; j < VALUES; j++) printf("%u ",container->history[i][j]);
+			printf("\n");
+		}
 	}
 }
 
@@ -145,8 +160,14 @@ void print_state_history(state_container* container) {
  * Returns 0 or amount of errorous state variables in given state
 */
 int set_state(state_container* container, char* state) {
-	if(strlen(state) != VALUES_TOTAL) return -1;
-	if(!container) return -2;
+	if(strlen(state) != VALUES_TOTAL) {
+		printf("set_state: Invalid lenght for input state (%d)\n",(int)strlen(state));
+		return -1;
+	}
+	if(!container) {
+		printf("set_state: Container is missing\n");
+		return -2;
+	}
 	
 	int failures = 0;
 	
@@ -155,9 +176,15 @@ int set_state(state_container* container, char* state) {
 		char temp_value = 0;
 		memcpy(&temp_value,&state[i],sizeof(char));
 		value = (uint8_t)atoi(&temp_value);
-		if ((value > 0) && (value < LIMIT)) container->state[i] = value;
+		if ((value > 0) && (value < LIMIT)) {
+			if (i == DATA_IDENTIFIABILITY && value > 3) {
+				printf("set_state: Invalid state variable for identifiability, must be 1 - 3, value = \"%u\" @ state[%d]\n",value,i);
+				failures++;
+			}
+			else container->state[i] = value;
+		}
 		else {
-			printf("Invalid state variable \"%u\" @ state[%d]\n",value,i);
+			printf("set_state: Invalid state variable \"%u\" @ state[%d]\n",value,i);
 			failures++;
 		}
 	}
@@ -165,14 +192,17 @@ int set_state(state_container* container, char* state) {
 }
 
 int set_existing_state(state_container* container, uint8_t *state) {
-	if(!container) return -1;
+	if(!container) {
+		printf("set_existing_state: Container is missing\n");
+		return -2;
+	}
 	
 	int failures = 0;
 	
 	for(int i = 0; i < VALUES_TOTAL ; i++) {
 		if ((state[i] > 0) && (state[i] < LIMIT)) container->state[i] = state[i];
 		else {
-			printf("Invalid state variable \"%u\" @ state[%d]\n",state[i],i);
+			printf("set_existing_state: Invalid state variable \"%u\" @ state[%d]\n",state[i],i);
 			failures++;
 		}
 	}
